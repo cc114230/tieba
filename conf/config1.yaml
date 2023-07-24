@@ -1,0 +1,30 @@
+app:
+  name: "tieba"
+  mode: "dev"
+  port: 8888
+  Start_time: "2022-04-23"
+  machineID: 1
+
+
+log:
+  level: "debug"
+  filename: "tieba.log"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+
+mysql:
+  host: "xxx"
+  port: 3307
+  user: "root"
+  password: "root"
+  dbname: "tieba"
+  mysql.max_open_conns: 200
+  mysql.max_idle_conns: 50
+
+redis:
+  host: "xxx"
+  port: 6379
+  password: ""
+  db: 0
+  pool_size: 100
