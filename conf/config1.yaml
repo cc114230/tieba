@@ -1,6 +1,7 @@
 name: "tieba"
 mode: "dev"
 port: 8888
+version: "1.0"
 Start_time: "2022-04-23"
 machineID: 1
 
