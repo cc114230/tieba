@@ -9,7 +9,7 @@ import (
 	"tieba/logger"
 	"tieba/pkg/snowflake"
 	"tieba/router"
-	"tieba/setting"
+	settings "tieba/setting"
 )
 
 // @title 贴吧项目接口文档
@@ -20,12 +20,12 @@ import (
 // @BasePath /api/v1
 func main() {
 	// 加载配置
-	if err := setting.Init(); err != nil {
+	if err := settings.Init(); err != nil {
 		fmt.Printf("init settings failed, err:%v\n", err)
 		return
 	}
 	// 初始化日志
-	if err := logger.Init(); err != nil {
+	if err := logger.Init(settings.Conf.LogConfig); err != nil {
 		fmt.Printf("init logger failed, err:%v\n", err)
 		return
 	}
@@ -46,7 +46,7 @@ func main() {
 	}
 	defer redis.Close()
 
-	if err := snowflake.Init(fmt.Sprintf("%s", viper.GetString("app.Start_time")),
+	if err := snowflake.Init(fmt.Sprintf("%s", viper.GetString("Start_time")),
 		viper.GetInt64("machineID")); err != nil {
 		fmt.Printf("init snowflake failed, err:%v\n", err)
 		return
@@ -58,7 +58,7 @@ func main() {
 	}
 	// 注册路由
 	r := router.SetupRouter()
-	err := r.Run(fmt.Sprintf(":%d", viper.GetInt("app.port")))
+	err := r.Run(fmt.Sprintf(":%d", settings.Conf.Port))
 	if err != nil {
 		fmt.Printf("run server failed, err:%v\n", err)
 		return

@@ -1,9 +1,8 @@
-app:
-  name: "tieba"
-  mode: "dev"
-  port: 8888
-  Start_time: "2022-04-23"
-  machineID: 1
+name: "tieba"
+mode: "dev"
+port: 8888
+Start_time: "2022-04-23"
+machineID: 1
 
 
 log:
