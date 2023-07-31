@@ -18,7 +18,7 @@ mysql:
   port: 3307
   user: "root"
   password: "root"
-  dbname: "tieba"
+  db_name: "tieba"
   mysql.max_open_conns: 200
   mysql.max_idle_conns: 50
 

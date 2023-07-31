@@ -2,16 +2,21 @@ package models
 
 //定义请求参数结构体,前端注册登录的数据，绑定到以下结构体中
 
+const (
+	OrderTime  = "time"
+	OrderScore = "score"
+)
+
 // ParamSignUp 注册请求参数
 type ParamSignUp struct {
-	Username   string `json:"username" binding:"required,min=5,max=20"`
+	Username   string `json:"username" binding:"required,min=3,max=20"`
 	Password   string `json:"password" binding:"required,min=5,max=20"`
 	RePassword string `json:"re_password" binding:"required,eqfield=Password"`
 }
 
 // ParamLogin 登录请求参数
 type ParamLogin struct {
-	Username string `json:"username" binding:"required,min=5,max=20"`
+	Username string `json:"username" binding:"required,min=3,max=20"`
 	Password string `json:"password" binding:"required,min=5,max=20"`
 	//CaptchaID string `json:"captcha_id" binding:"required" `
 	//Captcha   string `json:"captcha" binding:"required,min=5,max=5" `
