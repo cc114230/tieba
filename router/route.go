@@ -30,9 +30,9 @@ func SetupRouter() *gin.Engine {
 	v1.Use(middleware.JWTAuthMiddleware())
 	{
 		v1.POST("/post", controller.CreatePostHandler)
-
 		v1.POST("/vote", controller.PostVoteHandler)
 		v1.POST("/comment", controller.CommentHandler)
+		v1.POST("/sign", controller.SignHandler)
 	}
 
 	r.NoRoute(func(c *gin.Context) {
