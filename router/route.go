@@ -22,6 +22,7 @@ func SetupRouter() *gin.Engine {
 	v1.GET("/community", controller.CommunityHandler)
 	v1.GET("/community/:id", controller.CommunityDetailHandler)
 	v1.GET("/posts", controller.GetPostListHandler)
+	v1.GET("/comments", controller.GetCommentListHandler)
 	//按照帖子发布时间或点赞数获取帖子列表
 	v1.GET("/posts2", controller.GetPostListHandler2)
 	v1.GET("/post/:id", controller.GetPostDetailHandler)

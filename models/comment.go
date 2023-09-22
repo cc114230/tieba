@@ -10,3 +10,10 @@ type Comment struct {
 	CommenterID int64     `json:"commenter_id" db:"commenter_id"`
 	Commenter   string    `json:"commenter" db:"commenter"`
 }
+type CommentDetail struct {
+	PostID      string    `json:"post_id" db:"post_id"`
+	Content     string    `json:"content" db:"content" `
+	CommenterID string    `json:"commenter_id" db:"commenter_id"`
+	Commenter   string    `json:"commenter" db:"commenter"`
+	CreateTime  time.Time `json:"create_time" db:"create_time"`
+}

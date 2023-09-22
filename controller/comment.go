@@ -46,3 +46,14 @@ func CommentHandler(c *gin.Context) {
 	//3.返回响应
 	ResponseSuccess(c, nil)
 }
+
+func GetCommentListHandler(c *gin.Context) {
+	data, err := logic.GetCommentList()
+	if err != nil {
+		zap.L().Error("logic.GetCommentList() failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+
+	ResponseSuccess(c, data)
+}
