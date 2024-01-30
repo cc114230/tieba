@@ -1,11 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/spf13/viper"
+	"os"
 	"tieba/controller"
 	"tieba/dao/mysql"
 	"tieba/dao/redis"
+	"tieba/es"
+	"tieba/job"
+	"tieba/kafka"
 	"tieba/logger"
 	"tieba/pkg/snowflake"
 	"tieba/router"
@@ -19,8 +24,13 @@ import (
 // @host 127.0.0.1:8888
 // @BasePath /api/v1
 func main() {
+
+	if len(os.Args) < 2 {
+		fmt.Println("need config file.eg: tieba config.yaml")
+		return
+	}
 	// 加载配置
-	if err := settings.Init(); err != nil {
+	if err := settings.Init(os.Args[1]); err != nil {
 		fmt.Printf("init settings failed, err:%v\n", err)
 		return
 	}
@@ -41,10 +51,6 @@ func main() {
 		fmt.Printf("init redis failed, err:%v\n", err)
 		return
 	}
-	if err := redis.Init(settings.Conf.RedisConfig); err == nil {
-		fmt.Println("redis connect success")
-	}
-	defer redis.Close()
 
 	if err := snowflake.Init(fmt.Sprintf("%s", viper.GetString("Start_time")),
 		viper.GetInt64("machineID")); err != nil {
@@ -56,6 +62,27 @@ func main() {
 		fmt.Printf("init validator trans failed, err:%v\n", err)
 		return
 	}
+
+	// 初始化kafka
+	kafka.Init(settings.Conf.KafkaConfig)
+	defer kafka.Close()
+
+	// 初始化es
+	if err := es.Init(settings.Conf.EsConfig); err != nil {
+		fmt.Printf("init es failed, err:%v\n", err)
+		return
+	}
+
+	go func() {
+		err := job.ReadFromKafkaToES(&settings.EsConfig{
+			Index:     "post",
+			Addresses: []string{"http://localhost:9200"},
+		}, context.Background())
+		if err != nil {
+			panic(err)
+		}
+	}()
+
 	// 注册路由
 	r := router.SetupRouter()
 	err := r.Run(fmt.Sprintf(":%d", settings.Conf.Port))

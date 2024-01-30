@@ -1,7 +1,7 @@
 name: "tieba"
 mode: "dev"
 port: 8888
-version: "1.0"
+version: "v1.0"
 Start_time: "2022-04-23"
 machineID: 1
 
@@ -14,8 +14,8 @@ log:
   max_backups: 7
 
 mysql:
-  host: "xxx"
-  port: 3307
+  host: "127.0.0.1"
+  port: 13306
   user: "root"
   password: "root"
   db_name: "tieba"
@@ -23,8 +23,19 @@ mysql:
   mysql.max_idle_conns: 50
 
 redis:
-  host: "xxx"
-  port: 6379
+  host: "127.0.0.1"
+  port: 16379
   password: ""
   db: 0
   pool_size: 100
+
+kafka:
+  brokers:
+    - "127.0.0.1:9092"
+  group_id: "post-job"
+  topic: "tieba_post"
+
+elasticsearch:
+  addresses:
+    - "http://localhost:9200"
+  index: "post"

@@ -18,6 +18,8 @@ type AppConfig struct {
 	*LogConfig   `mapstructure:"log"`
 	*MySQLConfig `mapstructure:"mysql"`
 	*RedisConfig `mapstructure:"redis"`
+	*KafkaConfig `mapstructure:"kafka"`
+	*EsConfig    `mapstructure:"elasticsearch"`
 }
 
 type LogConfig struct {
@@ -46,14 +48,28 @@ type RedisConfig struct {
 	PoolSize int    `mapstructure:"pool_size"`
 }
 
-func Init() (err error) {
+type KafkaConfig struct {
+	Brokers []string `mapstructure:"brokers"`
+	GroupID string   `mapstructure:"group_id"`
+	Topic   string   `mapstructure:"topic"`
+}
 
-	// 添加配置文件所在目录
-	viper.AddConfigPath("conf")
-	// 指定要加载的配置文件名（不包含文件扩展名）
-	viper.SetConfigName("config")
-	// 设置配置文件类型，例如 YAML 格式的配置文件
-	viper.SetConfigType("yaml")
+type EsConfig struct {
+	Addresses []string `mapstructure:"addresses"`
+	Index     string   `mapstructure:"index"`
+}
+
+func Init(filePath string) (err error) {
+	//
+	//// 添加配置文件所在目录
+	//viper.AddConfigPath("conf")
+	//// 指定要加载的配置文件名（不包含文件扩展名）
+	//viper.SetConfigName("config")
+	//// 设置配置文件类型，例如 YAML 格式的配置文件
+	//viper.SetConfigType("yaml")
+
+	viper.SetConfigFile(filePath)
+
 	err = viper.ReadInConfig() // 读取配置信息
 	if err != nil {
 		// 读取配置信息失败
